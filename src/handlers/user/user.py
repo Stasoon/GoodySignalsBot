@@ -46,6 +46,11 @@ async def __handle_start_command(message: Message, state: FSMContext) -> None:
         reflink=message.get_full_command()[1]
     )
 
+    user = users.get_user_or_none(telegram_id=message.from_user.id)
+    if user.onewin_id:
+        await message.answer(text='Welcome back!', reply_markup=Keyboards.get_play())
+        return
+
     await message.answer_photo(
         photo=Messages.get_welcome_photo(),
         caption=Messages.get_welcome(message.from_user.first_name),
